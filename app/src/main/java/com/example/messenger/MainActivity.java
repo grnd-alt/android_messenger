@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute(){
             super.onPreExecute();
-            //pd = ProgressDialog.show(MainActivity.this,"","logging you in",true,false);
             return;
         }
         @Override
@@ -73,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
         }
         @Override
         protected void onPostExecute(Object result){
-            //pd.dismiss();
             Intent newInt = new Intent(MainActivity.this,Name_list.class);
             MainActivity.this.startActivity(newInt);
             return;
@@ -160,7 +158,5 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return returner;
-
-
     };
 };
