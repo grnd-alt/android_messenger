@@ -37,8 +37,9 @@ public class Add_contact extends AppCompatActivity {
             public void onClick(View view) {
                 if (send_request.getVisibility() == View.VISIBLE){
                     TextView userdis = (TextView) findViewById(R.id.user_name_display);
+                    TextView userid = (TextView) findViewById(R.id.personid_input);
                     AsyncTask request = new request();
-                    request.execute(userdis.getText().toString());
+                    request.execute(userid.getText().toString()+';'+userdis.getText().toString());
                 }
                 else{
                     return;
@@ -56,7 +57,13 @@ public class Add_contact extends AppCompatActivity {
         @Override
         protected Object doInBackground(Object ... objects){
             add_contact((String) objects[0]);
+            pd.dismiss();
             return null;
+        }
+        @Override
+        protected void onPostExecute(Object result){
+            pd.dismiss();
+            return;
         }
     }
     private class searcher extends AsyncTask{
@@ -100,8 +107,9 @@ public class Add_contact extends AppCompatActivity {
     public void add_contact(String Username){
         try{
             FileOutputStream fos = openFileOutput("contacts.txt", Context.MODE_APPEND);
-            String save = Username +';';
+            String save = Username;
             fos.write(save.getBytes());
+            fos.write("\r\n".getBytes());
             fos.close();
             TextView username = (TextView) findViewById(R.id.username_input);
         } catch (IOException e) {
