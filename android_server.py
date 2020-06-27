@@ -49,7 +49,7 @@ def check_login(ID,user,password):
 def new_message(from_id,to_id,message):
 	global cursor,db
 	get_cursor()
-	cursor.execute('INSERT into OPEN_MESSANGES(sender_ID,receiver_ID,content) values('+from_id+','+to_id+',\"'+str(message)+'\"')
+	cursor.execute('INSERT into OPEN_MESSANGES(sender_ID,receiver_ID,content) values('+from_id+','+to_id+',\"'+str(message)+'\");')
 	for x in cursor:
 		if x[0] == '':
 			pass
