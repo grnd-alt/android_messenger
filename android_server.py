@@ -64,7 +64,8 @@ def connection(client,addr):
 		print(recv)
 		send_to = recv[1]
 		content = recv[2]
-		print('sending '+content+' to '+send_to+' from: '+str(addr[0]))
+		from_id = recv[3]
+		print('sending '+content+' to '+send_to+' from: '+ from_id)
 	elif recv[0] == "register":
 		print('recv')
 		print("new user: ",recv[1])
