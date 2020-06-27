@@ -21,7 +21,7 @@ def new_user(name,password):
 			pass
 	db.commit()
 	cursor.close()
-	db.close()	
+	db.close()
 	get_cursor()
 	cursor.execute('select max(User_ID) from USER;')
 	for x in cursor:
