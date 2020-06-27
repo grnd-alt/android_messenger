@@ -46,6 +46,16 @@ def check_login(ID,user,password):
 		dbpass = x[0]
 	if dbpass == password:
 		return True
+def new_message(from_id,to_id,message):
+	global cursor,db
+	get_cursor()
+	cursor.execute('INSERT into OPEN_MESSANGES(sender_ID,receiver_ID,content) values('+from_id+','+to_id+',\"'+str(message)+'\"')
+	for x in cursor:
+		if x[0] == '':
+			pass
+	db.commit()
+	cursor.close
+	db.close()
 socket = socket.socket()
 socket.bind(("192.168.1.101",8700))
 socket.listen()
@@ -66,6 +76,7 @@ def connection(client,addr):
 		content = recv[2]
 		from_id = recv[3]
 		print('sending '+content+' to '+send_to+' from: '+ from_id)
+		new_message(from_id,send_to,content)
 	elif recv[0] == "register":
 		print('recv')
 		print("new user: ",recv[1])
