@@ -61,6 +61,7 @@ def seperator(string):
 def connection(client,addr):
 	recv = seperator(client.recv(1024).decode()[2:])
 	if recv[0] == "message":
+		print(recv)
 		send_to = recv[1]
 		content = recv[2]
 		print('sending '+content+' to '+send_to+' from: '+str(addr[0]))
