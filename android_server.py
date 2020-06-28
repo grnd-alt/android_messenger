@@ -66,7 +66,7 @@ def get_message(to_id):
 		print(x)
 		middle = ""
 		for i in x:
-			middle += i +";"
+			middle += str(i) +";"
 			print(middle)
 		returner.append(middle)
 	print(returner)
