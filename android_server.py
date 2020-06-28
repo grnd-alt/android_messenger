@@ -61,8 +61,16 @@ def get_message(to_id):
 	global cursor,db
 	get_cursor()
 	cursor.execute("select * from OPEN_MESSANGES where receiver_ID = "+to_id+';')
+	returner = []
 	for x in cursor:
 		print(x)
+		middle = ""
+		for i in x:
+			middle += i +";"
+			print(middle)
+		returner.append(middle)
+	print(returner)
+	return returner
 socket = socket.socket()
 socket.bind(("192.168.1.101",8700))
 socket.listen()
