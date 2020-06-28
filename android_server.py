@@ -56,6 +56,8 @@ def new_message(from_id,to_id,message):
 	db.commit()
 	cursor.close
 	db.close()
+def get_message(to_id):
+	print(to_id)
 socket = socket.socket()
 socket.bind(("192.168.1.101",8700))
 socket.listen()
@@ -77,6 +79,8 @@ def connection(client,addr):
 		from_id = recv[3]
 		print('sending '+content+' to '+send_to+' from: '+ from_id)
 		new_message(from_id,send_to,content)
+	elif recv[0] == "message request":
+		get_message(recv[1])
 	elif recv[0] == "register":
 		print('recv')
 		print("new user: ",recv[1])
