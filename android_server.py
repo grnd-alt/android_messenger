@@ -93,7 +93,7 @@ def connection(client,addr):
 		print('sending '+content+' to '+send_to+' from: '+ from_id)
 		new_message(from_id,send_to,content)
 	elif recv[0] == "message request":
-		client.send(get_message(recv[1]))
+		client.send(get_message(recv[1]).encode())
 	elif recv[0] == "register":
 		print('recv')
 		print("new user: ",recv[1])
