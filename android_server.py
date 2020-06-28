@@ -67,7 +67,7 @@ def get_message(to_id):
 		middle = ""
 		for i in x:
 			middle += str(i) +";"
-		returner += middle +"\n"
+		returner.append(middle +"\n")
 	print(returner)
 	return returner
 socket = socket.socket()
@@ -92,6 +92,8 @@ def connection(client,addr):
 		from_id = recv[3]
 		print('sending '+content+' to '+send_to+' from: '+ from_id)
 		new_message(from_id,send_to,content)
+	elif recv[0] == "delete":
+		print("deleting messages from: "+recv[1]+recv[2])
 	elif recv[0] == "message request":
 		client.send(get_message(recv[1]).encode())
 	elif recv[0] == "register":
