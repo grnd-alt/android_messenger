@@ -61,14 +61,13 @@ def get_message(to_id):
 	global cursor,db
 	get_cursor()
 	cursor.execute("select * from OPEN_MESSANGES where receiver_ID = "+to_id+';')
-	returner = []
+	returner = ""
 	for x in cursor:
 		print(x)
 		middle = ""
 		for i in x:
 			middle += str(i) +";"
-			print(middle)
-		returner.append(middle)
+		returner += middle +"\n"
 	print(returner)
 	return returner
 socket = socket.socket()
@@ -94,7 +93,7 @@ def connection(client,addr):
 		print('sending '+content+' to '+send_to+' from: '+ from_id)
 		new_message(from_id,send_to,content)
 	elif recv[0] == "message request":
-		get_message(recv[1])
+		client.send(get_message(recv[1]))
 	elif recv[0] == "register":
 		print('recv')
 		print("new user: ",recv[1])
