@@ -58,6 +58,11 @@ def new_message(from_id,to_id,message):
 	db.close()
 def get_message(to_id):
 	print(to_id)
+	global cursor,db
+	get_cursor()
+	cursor.execute("select * from OPEN_MESSANGES where receiver_ID = "+to_id+';')
+	for x in cursor:
+		print(x)
 socket = socket.socket()
 socket.bind(("192.168.1.101",8700))
 socket.listen()
@@ -72,6 +77,7 @@ def seperator(string):
 	return solved
 def connection(client,addr):
 	recv = seperator(client.recv(1024).decode()[2:])
+	print(recv)
 	if recv[0] == "message":
 		print(recv)
 		send_to = recv[1]
