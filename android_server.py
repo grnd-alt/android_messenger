@@ -70,10 +70,11 @@ def get_message(to_id):
 		returner += middle +"\n"  
 	print(returner)
 	return returner
-def delete_messages(to_id,from_id):
+def delete_messages(from_id,to_id):
 	global cursor,db
 	get_cursor
-	cursor.execute("delete * from OPEN_MESSANGES where sender_id = "+from_id+" and receiver_ID = "+to_id+";")
+	cursor.execute("delete from OPEN_MESSANGES where sender_id = "+from_id+" and receiver_ID = "+to_id+";")
+	db.commit()
 	for x in cursor:
 		pass
 	return
