@@ -63,14 +63,16 @@ def get_message(to_id):
 	cursor.execute("select * from OPEN_MESSANGES where receiver_ID = "+to_id+';')
 	returner = ""
 	for x in cursor:
-		print(x)
+		print(x,"x")
 		middle = ""
 		for i in x:
 			middle += str(i) +";"
 		returner += middle +"\n"  
-	print(returner)
+	print(returner + "returner")
+	if returner == "":
+		returner += "\n"
 	return returner
-def delete_messages(from_id,to_id):
+def delete_messages(to_id,from_id):
 	global cursor,db
 	get_cursor
 	cursor.execute("delete from OPEN_MESSANGES where sender_id = "+from_id+" and receiver_ID = "+to_id+";")
@@ -104,14 +106,18 @@ def connection(client,addr):
 		print("deleting messages from: "+recv[1]+recv[2])
 		delete_messages(recv[1],recv[2])
 	elif recv[0] == "message request":
-		client.send(get_message(recv[1]).encode())
+		message = get_message(recv[1])
+		print(message+"hello world i am here")
+		client.send(message.encode())
 	elif recv[0] == "register":
 		print('recv')
 		print("new user: ",recv[1])
 		print("doing stuff")
 		user_id = new_user(recv[1],recv[2])
 		to_send = str(user_id) + "\n"
+		print(to_send)
 		client.send(to_send.encode())
+		print("end")
 	elif recv[0] == 'search':
 		print("showing all users with the ID: "+recv[1])
 		found = find_user(recv[1])+'\n'
