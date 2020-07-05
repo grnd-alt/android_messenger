@@ -70,7 +70,9 @@ def get_message(to_id):
 		returner += middle +"\n"  
 	print(returner + "returner")
 	if returner == "":
-		returner += "\n"
+		returner += "nothing\n"
+	else:
+		returner = "start\n" + returner + "end\n"
 	return returner
 def delete_messages(to_id,from_id):
 	global cursor,db
