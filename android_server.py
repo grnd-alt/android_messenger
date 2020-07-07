@@ -70,21 +70,21 @@ def get_message(to_id):
 		returner += middle +"\n"  
 	print(returner + "returner")
 	if returner == "":
-		returner += "nothing\n"
+		returner = "nothing\n"
 	else:
 		returner = "start\n" + returner + "end\n"
 	return returner
 def delete_messages(to_id,from_id):
 	global cursor,db
 	get_cursor
-	cursor.execute("delete from OPEN_MESSANGES where sender_id = "+from_id+" and receiver_ID = "+to_id+";")
+	cursor.execute("delete from OPEN_MESSANGES where sender_id = "+to_id+" and receiver_ID = "+from_id+";")
 	db.commit()
 	for x in cursor:
 		pass
 	return
 socket = socket.socket()
 socket.bind(("192.168.1.101",8700))
-socket.listen()
+socket.listen() 
 def seperator(string):
 	counter = 0
 	solved = []
