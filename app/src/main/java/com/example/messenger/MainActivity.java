@@ -37,8 +37,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 new check_registration().execute();
-                Intent newInt = new Intent(MainActivity.this,Name_list.class);
-                MainActivity.this.startActivity(newInt);
+                new check_login().execute(read_login());
+                /*Intent newInt = new Intent(MainActivity.this,Name_list.class);
+                newInt.putExtra("User_ID",read_login().toString().split(";")[0]);
+                MainActivity.this.startActivity(newInt);*/
             }
         });
     }
@@ -61,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
                     DataInputStream inputStream = new DataInputStream(s.getInputStream());
                     String resp = String.valueOf(inputStream.readLine());
                     inputStream.close();
+                    outputStream.close();
+                    s.close();
                     return resp;
 
 
@@ -73,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Object result){
             Intent newInt = new Intent(MainActivity.this,Name_list.class);
+            newInt.putExtra("User_ID",read_login().toString().split(";")[0]);
             MainActivity.this.startActivity(newInt);
             return;
         }
@@ -89,38 +94,38 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Object ... objects) {
             a = 1;
-            final String uname;
             TextView username = (TextView) findViewById(R.id.username_input);
             TextView password = (TextView) findViewById(R.id.password_input);
             try {
                 Socket s = new Socket("belprojects.hopto.org", 2);
                 DataOutputStream stream = new DataOutputStream(s.getOutputStream());
-                String pass_hashed = String.valueOf(password.getText());
-                stream.writeUTF("register;" + String.valueOf(username.getText()) + ';' + pass_hashed + ';');
+                String pass_hashed = password.getText().toString();
+                stream.writeUTF("register;" + username.getText().toString() + ';' + pass_hashed + ';');
                 stream.flush();
 
                 DataInputStream instream = new DataInputStream(s.getInputStream());
                 String resp = String.valueOf(instream.readLine());
                 stream.close();
                 s.close();
-
-
-                return resp +';'+ String.valueOf(username.getText())+';'+pass_hashed;
+                return resp +';'+username.getText().toString()+';'+pass_hashed;
             } catch (UnknownHostException e) {
                 e.printStackTrace();
+                return e.toString();
             } catch (IOException e) {
                 return e.toString();
             }
-            return "none;none";
+            //return "null";
         }
         @Override
         protected void onPostExecute(Object res){
-            String result = res.toString();
-            TextView username = (TextView)findViewById(R.id.username_input);
-            username.setText(res.toString());
-            Write_login(result.substring(0,result.indexOf(';')),result.substring(result.indexOf(';')));
+            if (true) {
+                String result = res.toString();
+                TextView username = (TextView) findViewById(R.id.username_input);
+                username.setText(result);
+                Write_login(result.substring(0,result.indexOf(';')),result.substring(result.indexOf(';')));
+            }
             pd.dismiss();
-
+            return;
         }
     }
     public void Write_login(String Username,String password){
@@ -133,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
             username.setText("failed no task");
         } catch (IOException e) {
             TextView username = (TextView) findViewById(R.id.username_input);
-            username.setText("failed the task");
+            username.setText(e.toString());
             e.printStackTrace();
         }
     }
@@ -154,9 +159,11 @@ public class MainActivity extends AppCompatActivity {
             return sb.toString();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            return "nothing";
         } catch (IOException e) {
             e.printStackTrace();
+            return "none";
         }
-        return returner;
+        //return returner;
     };
 };

@@ -70,7 +70,8 @@ public class Add_contact extends AppCompatActivity {
         ProgressDialog pd;
         @Override
         protected void onPreExecute(){
-            pd = ProgressDialog.show(Add_contact.this,"","checking registration data",true,true);
+            //super.onPreExecute();
+            pd = ProgressDialog.show(Add_contact.this,"","doing the stuff",true,true);
             return;
         }
         @Override
