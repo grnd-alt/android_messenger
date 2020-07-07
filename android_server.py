@@ -21,7 +21,7 @@ def new_user(name,password):
 			pass
 	db.commit()
 	cursor.close()
-	db.close()	
+	db.close()
 	get_cursor()
 	cursor.execute('select max(User_ID) from USER;')
 	for x in cursor:
@@ -46,9 +46,45 @@ def check_login(ID,user,password):
 		dbpass = x[0]
 	if dbpass == password:
 		return True
+def new_message(from_id,to_id,message):
+	global cursor,db
+	get_cursor()
+	cursor.execute('INSERT into OPEN_MESSANGES(sender_ID,receiver_ID,content) values('+from_id+','+to_id+',\"'+str(message)+'\");')
+	for x in cursor:
+		if x[0] == '':
+			pass
+	db.commit()
+	cursor.close
+	db.close()
+def get_message(to_id):
+	print(to_id)
+	global cursor,db
+	get_cursor()
+	cursor.execute("select * from OPEN_MESSANGES where receiver_ID = "+to_id+';')
+	returner = ""
+	for x in cursor:
+		print(x,"x")
+		middle = ""
+		for i in x:
+			middle += str(i) +";"
+		returner += middle +"\n"  
+	print(returner + "returner")
+	if returner == "":
+		returner = "nothing\n"
+	else:
+		returner = "start\n" + returner + "end\n"
+	return returner
+def delete_messages(to_id,from_id):
+	global cursor,db
+	get_cursor
+	cursor.execute("delete from OPEN_MESSANGES where sender_id = "+to_id+" and receiver_ID = "+from_id+";")
+	db.commit()
+	for x in cursor:
+		pass
+	return
 socket = socket.socket()
 socket.bind(("192.168.1.101",8700))
-socket.listen()
+socket.listen() 
 def seperator(string):
 	counter = 0
 	solved = []
@@ -60,17 +96,30 @@ def seperator(string):
 	return solved
 def connection(client,addr):
 	recv = seperator(client.recv(1024).decode()[2:])
+	print(recv)
 	if recv[0] == "message":
+		print(recv)
 		send_to = recv[1]
 		content = recv[2]
-		print('sending '+content+' to '+send_to+' from: '+str(addr[0]))
+		from_id = recv[3]
+		print('sending '+content+' to '+send_to+' from: '+ from_id)
+		new_message(from_id,send_to,content)
+	elif recv[0] == "delete":
+		print("deleting messages from: "+recv[1]+recv[2])
+		delete_messages(recv[1],recv[2])
+	elif recv[0] == "message request":
+		message = get_message(recv[1])
+		print(message+"hello world i am here")
+		client.send(message.encode())
 	elif recv[0] == "register":
 		print('recv')
 		print("new user: ",recv[1])
 		print("doing stuff")
 		user_id = new_user(recv[1],recv[2])
 		to_send = str(user_id) + "\n"
+		print(to_send)
 		client.send(to_send.encode())
+		print("end")
 	elif recv[0] == 'search':
 		print("showing all users with the ID: "+recv[1])
 		found = find_user(recv[1])+'\n'
